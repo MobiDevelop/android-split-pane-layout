@@ -56,11 +56,15 @@ containing a value of this type.
         public static final int splitter_bg_v=0x7f020002;
     }
     public static final class id {
+        public static final int details=0x7f040003;
         public static final int horizontal=0x7f040000;
+        public static final int titles=0x7f040002;
         public static final int vertical=0x7f040001;
     }
     public static final class layout {
-        public static final int main=0x7f030000;
+        public static final int fragment_layout=0x7f030000;
+        public static final int main=0x7f030001;
+        public static final int simple_list_item_checkable_1=0x7f030002;
     }
     public static final class string {
         public static final int app_name=0x7f050001;

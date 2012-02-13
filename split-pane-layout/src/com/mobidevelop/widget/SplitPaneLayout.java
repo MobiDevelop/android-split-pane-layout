@@ -102,6 +102,7 @@ public class SplitPaneLayout extends ViewGroup {
 		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
 
+		check();
 		switch (mOrientation) {
 		case 0: {
 			if (!mSplitterPositionConfigured) {
@@ -167,7 +168,8 @@ public class SplitPaneLayout extends ViewGroup {
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		int w = r - l;
 		int h = b - t;
-
+		
+		check();
 		switch (mOrientation) {
 		case 0: {
 			if (mSplitterPositionPixel == 0 && mSplitterPositionPercent != 0) {
@@ -305,4 +307,11 @@ public class SplitPaneLayout extends ViewGroup {
 		return true;
 	}
 
+	private void check()
+	{
+		if (getChildCount() != 2)
+		{
+			throw new RuntimeException("SplitPaneLayout must have exactly two child views.");
+		}
+	}
 }

@@ -26,6 +26,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
@@ -38,8 +39,6 @@ public class SplitPaneLayout extends ViewGroup {
 	private int mSplitterSize;
 	private int mSplitterPositionPixel;
 	private int mSplitterPositionPercent;
-
-	private int mSplitterBackgroundResource;
 
 	private boolean mSplitterPositionConfigured;
 
@@ -84,11 +83,21 @@ public class SplitPaneLayout extends ViewGroup {
 				mSplitterPositionPixel = 0;
 				mSplitterPositionPercent = 50;
 			}
-			mSplitterBackgroundResource = a.getResourceId(
-					R.styleable.SplitPaneLayout_splitterBackground, 0);
-			if (mSplitterBackgroundResource != 0) {
-				mSplitter = context.getResources().getDrawable(
-						mSplitterBackgroundResource);
+			value = a.peekValue(R.styleable.SplitPaneLayout_splitterBackground);
+			if (value != null) {
+				android.util.Log.i("spl", "got value: " + value.type + " :: "
+						+ value.string);
+				if (value.type == TypedValue.TYPE_REFERENCE
+						|| value.type == TypedValue.TYPE_STRING) {
+					mSplitter = a
+							.getDrawable(R.styleable.SplitPaneLayout_splitterBackground);
+				} else if (value.type == TypedValue.TYPE_INT_COLOR_ARGB8
+						|| value.type == TypedValue.TYPE_INT_COLOR_ARGB4
+						|| value.type == TypedValue.TYPE_INT_COLOR_RGB8
+						|| value.type == TypedValue.TYPE_INT_COLOR_RGB4) {
+					mSplitter = new PaintDrawable(a.getColor(
+							R.styleable.SplitPaneLayout_splitterBackground, 0));
+				}
 			}
 			a.recycle();
 		}
@@ -168,7 +177,7 @@ public class SplitPaneLayout extends ViewGroup {
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
 		int w = r - l;
 		int h = b - t;
-		
+
 		check();
 		switch (mOrientation) {
 		case 0: {
@@ -233,8 +242,10 @@ public class SplitPaneLayout extends ViewGroup {
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
 		super.dispatchDraw(canvas);
-		mSplitter.setBounds(curr);
-		mSplitter.draw(canvas);
+		if (mSplitter != null) {
+			mSplitter.setBounds(curr);
+			mSplitter.draw(canvas);
+		}
 		if (isDragging) {
 			paint.setColor(Color.argb(128, 255, 255, 255));
 			canvas.drawRect(temp, paint);
@@ -307,11 +318,10 @@ public class SplitPaneLayout extends ViewGroup {
 		return true;
 	}
 
-	private void check()
-	{
-		if (getChildCount() != 2)
-		{
-			throw new RuntimeException("SplitPaneLayout must have exactly two child views.");
+	private void check() {
+		if (getChildCount() != 2) {
+			throw new RuntimeException(
+					"SplitPaneLayout must have exactly two child views.");
 		}
 	}
 }

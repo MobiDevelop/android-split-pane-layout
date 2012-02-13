@@ -50,6 +50,9 @@ containing a value of this type.
          */
         public static final int splitterSize=0x7f010001;
     }
+    public static final class color {
+        public static final int red=0x7f060000;
+    }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
         public static final int splitter_bg_h=0x7f020001;

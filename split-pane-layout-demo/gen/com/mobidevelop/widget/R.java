@@ -51,7 +51,7 @@ containing a value of this type.
         public static final int splitterSize=0x7f010001;
     }
     public static final class color {
-        public static final int red=0x7f060000;
+        public static final int red=0x7f050000;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
@@ -70,8 +70,8 @@ containing a value of this type.
         public static final int simple_list_item_checkable_1=0x7f030002;
     }
     public static final class string {
-        public static final int app_name=0x7f050001;
-        public static final int hello=0x7f050000;
+        public static final int app_name=0x7f060001;
+        public static final int hello=0x7f060000;
     }
     public static final class styleable {
         /** Attributes that can be used with a SplitPaneLayout.

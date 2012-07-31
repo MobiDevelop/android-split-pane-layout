@@ -6,7 +6,10 @@
     		<enum name="vertical" value="1" />
     	</attr>
     	<attr name="splitterSize"  format="dimension" />
+    	<attr name="splitterMovable"  format="boolean" />
     	<attr name="splitterPosition" format="dimension|fraction" />
-    	<attr name="splitterBackground" format="reference|color" />    	
+    	<attr name="splitterBackground" format="reference|color" />
+		<attr name="splitterDraggingBackground" format="reference|color" />
+		
     </declare-styleable>
 </resources>

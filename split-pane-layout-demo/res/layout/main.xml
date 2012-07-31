@@ -32,8 +32,28 @@
         android:layout_height="wrap_content"
         android:text="@string/hello" />
     
-    <TextView
+    <FrameLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello" />
+        android:layout_height="fill_parent">
+        
+		<com.mobidevelop.widget.SplitPaneLayout
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+			spl:orientation="horizontal"
+			spl:splitterSize="12dip"
+			spl:splitterPosition="33%"
+			spl:splitterBackground="@drawable/splitter_bg_h"
+			>
+		    <TextView
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="@string/hello" />
+		    
+		    <TextView
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:text="@string/hello" />
+		</com.mobidevelop.widget.SplitPaneLayout>
+		        
+    </FrameLayout>
 </com.mobidevelop.widget.SplitPaneLayout>

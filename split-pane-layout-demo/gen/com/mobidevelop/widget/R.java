@@ -25,7 +25,21 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 <p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
          */
-        public static final int splitterBackground=0x7f010003;
+        public static final int splitterBackground=0x7f010004;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int splitterDraggingBackground=0x7f010005;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int splitterMovable=0x7f010002;
         /** <p>May be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
 in (inches), mm (millimeters).
@@ -38,7 +52,7 @@ theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
          */
-        public static final int splitterPosition=0x7f010002;
+        public static final int splitterPosition=0x7f010003;
         /** <p>Must be a dimension value, which is a floating point number appended with a unit such as "<code>14.5sp</code>".
 Available units are: px (pixels), dp (density-independent pixels), sp (scaled pixels based on preferred font size),
 in (inches), mm (millimeters).
@@ -51,7 +65,13 @@ containing a value of this type.
         public static final int splitterSize=0x7f010001;
     }
     public static final class color {
-        public static final int red=0x7f050000;
+        public static final int red=0x7f060000;
+    }
+    public static final class dimen {
+        public static final int padding_large=0x7f050002;
+        public static final int padding_medium=0x7f050001;
+        public static final int padding_small=0x7f050000;
+        public static final int splitpanelayout_default_splitter_size=0x7f050003;
     }
     public static final class drawable {
         public static final int ic_launcher=0x7f020000;
@@ -70,8 +90,8 @@ containing a value of this type.
         public static final int simple_list_item_checkable_1=0x7f030002;
     }
     public static final class string {
-        public static final int app_name=0x7f060001;
-        public static final int hello=0x7f060000;
+        public static final int app_name=0x7f070001;
+        public static final int hello=0x7f070000;
     }
     public static final class styleable {
         /** Attributes that can be used with a SplitPaneLayout.
@@ -82,16 +102,21 @@ containing a value of this type.
            <tr><th>Attribute</th><th>Description</th></tr>
            <tr><td><code>{@link #SplitPaneLayout_orientation com.mobidevelop.widget:orientation}</code></td><td></td></tr>
            <tr><td><code>{@link #SplitPaneLayout_splitterBackground com.mobidevelop.widget:splitterBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #SplitPaneLayout_splitterDraggingBackground com.mobidevelop.widget:splitterDraggingBackground}</code></td><td></td></tr>
+           <tr><td><code>{@link #SplitPaneLayout_splitterMovable com.mobidevelop.widget:splitterMovable}</code></td><td></td></tr>
            <tr><td><code>{@link #SplitPaneLayout_splitterPosition com.mobidevelop.widget:splitterPosition}</code></td><td></td></tr>
            <tr><td><code>{@link #SplitPaneLayout_splitterSize com.mobidevelop.widget:splitterSize}</code></td><td></td></tr>
            </table>
            @see #SplitPaneLayout_orientation
            @see #SplitPaneLayout_splitterBackground
+           @see #SplitPaneLayout_splitterDraggingBackground
+           @see #SplitPaneLayout_splitterMovable
            @see #SplitPaneLayout_splitterPosition
            @see #SplitPaneLayout_splitterSize
          */
         public static final int[] SplitPaneLayout = {
-            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
+            0x7f010004, 0x7f010005
         };
         /**
           <p>This symbol is the offset where the {@link com.mobidevelop.widget.R.attr#orientation}
@@ -121,7 +146,33 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 "<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
           @attr name android:splitterBackground
         */
-        public static final int SplitPaneLayout_splitterBackground = 3;
+        public static final int SplitPaneLayout_splitterBackground = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.mobidevelop.widget.R.attr#splitterDraggingBackground}
+          attribute's value can be found in the {@link #SplitPaneLayout} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          @attr name android:splitterDraggingBackground
+        */
+        public static final int SplitPaneLayout_splitterDraggingBackground = 5;
+        /**
+          <p>This symbol is the offset where the {@link com.mobidevelop.widget.R.attr#splitterMovable}
+          attribute's value can be found in the {@link #SplitPaneLayout} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:splitterMovable
+        */
+        public static final int SplitPaneLayout_splitterMovable = 2;
         /**
           <p>This symbol is the offset where the {@link com.mobidevelop.widget.R.attr#splitterPosition}
           attribute's value can be found in the {@link #SplitPaneLayout} array.
@@ -140,7 +191,7 @@ theme attribute (in the form
 containing a value of this type.
           @attr name android:splitterPosition
         */
-        public static final int SplitPaneLayout_splitterPosition = 2;
+        public static final int SplitPaneLayout_splitterPosition = 3;
         /**
           <p>This symbol is the offset where the {@link com.mobidevelop.widget.R.attr#splitterSize}
           attribute's value can be found in the {@link #SplitPaneLayout} array.

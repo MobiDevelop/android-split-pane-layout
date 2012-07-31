@@ -29,4 +29,7 @@ Add a reference to the split-pane-layout library project, or copy the necessary 
 
 **NOTE**: A SplitPaneLayout **MUST** have exactly two children.  
 
-Precompiled Demo APK: <https://github.com/downloads/MobiDevelop/android-split-pane-layout/SplitPaneLayout-Demo.apk>
+Precompiled Demo APK
+====================
+<https://github.com/downloads/MobiDevelop/android-split-pane-layout/SplitPaneLayout-Demo.apk>
+![QR](https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=https://github.com/downloads/MobiDevelop/android-split-pane-layout/SplitPaneLayout-Demo.apk)

@@ -31,5 +31,5 @@ Add a reference to the split-pane-layout library project, or copy the necessary 
 
 Precompiled Demo APK
 ====================
-<https://github.com/downloads/MobiDevelop/android-split-pane-layout/SplitPaneLayout-Demo.apk>
-![QR](https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=https://github.com/downloads/MobiDevelop/android-split-pane-layout/SplitPaneLayout-Demo.apk)
+<https://www.box.com/s/6yw9kekmq558wgbwan91>
+![QR](https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=https://www.box.com/s/6yw9kekmq558wgbwan91)

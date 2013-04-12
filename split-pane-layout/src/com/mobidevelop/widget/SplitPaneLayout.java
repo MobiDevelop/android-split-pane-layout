@@ -63,7 +63,7 @@ public class SplitPaneLayout extends ViewGroup {
 	
 	public SplitPaneLayout(Context context) {
 		super(context);
-		mSplitterPositionPercent = 50;
+		mSplitterPositionPercent = 0.5f;
 		mSplitterDrawable = new PaintDrawable(0x88FFFFFF);
 		mSplitterDraggingDrawable = new PaintDrawable(0x88FFFFFF);
 	}	

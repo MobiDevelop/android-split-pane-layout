@@ -294,9 +294,20 @@ public class SplitPaneLayout extends ViewGroup {
 		}
 	}
 	
+	/**
+	 * Gets the current drawable used for the splitter.
+	 * 
+	 * @return the drawable used for the splitter
+	 */			
 	public Drawable getSplitterDrawable() {
 		return mSplitterDrawable;
 	}
+	
+	/**
+	 * Sets the drawable used for the splitter.
+	 * 
+	 * @param splitterDrawable the desired orientation of the layout
+	 */		
 	public void setSplitterDrawable(Drawable splitterDrawable) {
 		mSplitterDrawable = splitterDrawable;
 		if (getChildCount() == 2) {
@@ -304,9 +315,20 @@ public class SplitPaneLayout extends ViewGroup {
 		}
 	}
 	
+	/**
+	 * Gets the current drawable used for the splitter dragging overlay.
+	 * 
+	 * @return the drawable used for the splitter
+	 */		
 	public Drawable getSplitterDraggingDrawable() {
 		return mSplitterDraggingDrawable;
 	}
+	
+	/**
+	 * Sets the drawable used for the splitter dragging overlay.
+	 * 
+	 * @param splitterDrawable the desired orientation of the layout
+	 */		
 	public void setSplitterDraggingDrawable(Drawable splitterDraggingDrawable) {
 		mSplitterDraggingDrawable = splitterDraggingDrawable;
 		if (isDragging) {

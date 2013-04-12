@@ -294,6 +294,49 @@ public class SplitPaneLayout extends ViewGroup {
 		}
 	}
 	
+	public Drawable getSplitterDrawable() {
+		return mSplitterDrawable;
+	}
+	public void setSplitterDrawable(Drawable splitterDrawable) {
+		mSplitterDrawable = splitterDrawable;
+		if (getChildCount() == 2) {
+			remeasure();	
+		}
+	}
+	
+	public Drawable getSplitterDraggingDrawable() {
+		return mSplitterDraggingDrawable;
+	}
+	public void setSplitterDraggingDrawable(Drawable splitterDraggingDrawable) {
+		mSplitterDraggingDrawable = splitterDraggingDrawable;
+		if (isDragging) {
+			invalidate();
+		}
+	}
+	
+	/**
+	 * Gets the current orientation of the layout.
+	 * 
+	 * @return the orientation of the layout
+	 */		
+	public int getOrientation() {
+		return mOrientation;
+	}
+	
+	/**
+	 * Sets the orientation of the layout.
+	 * 
+	 * @param orientation the desired orientation of the layout
+	 */		
+	public void setOrientation(int orientation) {
+		if (mOrientation != orientation) {
+			mOrientation = orientation;
+			if (getChildCount() == 2) {
+				remeasure();	
+			}			
+		}		
+	}
+	
 	/**
 	 * Gets the current size of the splitter in pixels.
 	 * 
@@ -310,7 +353,9 @@ public class SplitPaneLayout extends ViewGroup {
 	 */		
 	public void setSplitterSize(int splitterSize) {
 		mSplitterSize = splitterSize;
-		remeasure();
+		if (getChildCount() == 2) {
+			remeasure();	
+		}		
 	}
 	
 	/**

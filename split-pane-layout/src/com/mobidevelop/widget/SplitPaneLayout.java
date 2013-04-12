@@ -28,7 +28,6 @@ import android.graphics.drawable.PaintDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
@@ -194,7 +193,7 @@ public class SplitPaneLayout extends ViewGroup {
 			switch (event.getAction()) {
 				case MotionEvent.ACTION_DOWN: {
 					if (mSplitterRect.contains(x,y)) {
-						this.performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
+						performHapticFeedback(HapticFeedbackConstants.VIRTUAL_KEY);
 						isDragging = true;
 						temp.set(mSplitterRect);
 						invalidate(temp);
@@ -261,7 +260,6 @@ public class SplitPaneLayout extends ViewGroup {
 		}
 		SavedState ss = (SavedState)state;
         super.onRestoreInstanceState(ss.getSuperState());
-        Log.v("MobiDevelop", "Position In: " + ss.mSplitterPositionPercent);
         setSplitterPositionPercent(ss.mSplitterPositionPercent);
 	}	
 

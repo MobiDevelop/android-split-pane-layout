@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.mobidevelop.spl.widget.SplitPaneLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:spl="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    spl:orientation="vertical"
+    spl:splitterSize="12dip"
+    spl:splitterPosition="33%"
+    spl:splitterBackground="@drawable/splitter_bg_v">
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello_world" />
+</com.mobidevelop.spl.widget.SplitPaneLayout>

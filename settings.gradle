@@ -1,0 +1,1 @@
+include ':split-pane-layout', ':split-pane-layout-demo'

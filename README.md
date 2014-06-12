@@ -7,7 +7,7 @@ Usage
 =====
 Add a reference to the split-pane-layout library project, or copy the necessary files into your project. Add a SplitPaneLayout as follows:
 
-    <com.mobidevelop.widget.SplitPaneLayout
+    <com.mobidevelop.spl.widget.SplitPaneLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:spl="http://schemas.android.com/apk/res-auto"
         android:layout_width="fill_parent"
@@ -25,7 +25,7 @@ Add a reference to the split-pane-layout library project, or copy the necessary 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="Child2" />
-    </com.mobidevelop.widget.SplitPaneLayout>
+    </com.mobidevelop.spl.widget.SplitPaneLayout>
 
 **NOTE**: A SplitPaneLayout **MUST** have exactly two children.  
 

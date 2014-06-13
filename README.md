@@ -29,7 +29,19 @@ Add a reference to the split-pane-layout library project, or copy the necessary 
 
 **NOTE**: A SplitPaneLayout **MUST** have exactly two children.  
 
+Using with Gradle
+====================
+SplitPaneLayout is published to Maven Central so can be easily added to your Gradle-based Android projects by adding the following entry to your dependencies:
+
+```groovy
+dependencies {
+    compile 'com.mobidevelop.spl:split-pane-layout:1.0.0'
+}
+```
+
+
 Precompiled Demo APK
 ====================
 <https://www.box.com/s/6yw9kekmq558wgbwan91>
+
 ![QR](https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=https://www.box.com/s/6yw9kekmq558wgbwan91)

@@ -31,6 +31,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewGroup;
 
 import com.mobidevelop.spl.R;
@@ -43,6 +44,11 @@ import com.mobidevelop.spl.R;
  * to redistribute the space allocated to each view.
  */
 public class SplitPaneLayout extends ViewGroup {
+
+    public interface ResizeListener {
+        public void panesResized();
+    }
+
     public static final int ORIENTATION_HORIZONTAL = 0;
     public static final int ORIENTATION_VERTICAL = 1;
 
@@ -62,6 +68,10 @@ public class SplitPaneLayout extends ViewGroup {
     private Rect temp = new Rect();
     private boolean isDragging = false;
 
+    private boolean rightPaneIsFullscreen = false;
+
+    private ResizeListener resizeListener;
+
     public SplitPaneLayout(Context context) {
         super(context);
         mSplitterPositionPercent = 0.5f;
@@ -77,6 +87,24 @@ public class SplitPaneLayout extends ViewGroup {
     public SplitPaneLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         extractAttributes(context, attrs);
+    }
+
+    public void setRightPaneFullscreen(boolean flag) {
+        this.rightPaneIsFullscreen = flag;
+        getChildAt(0).setVisibility(flag ? View.GONE : View.VISIBLE);
+        remeasure();
+        requestLayout();
+        if (resizeListener != null) {
+            resizeListener.panesResized();
+        }
+    }
+
+    public void setResizeListener(ResizeListener listener) {
+        this.resizeListener = listener;
+    }
+
+    public boolean isRightPaneFullscreen() {
+        return this.rightPaneIsFullscreen;
     }
 
     private void extractAttributes(Context context, AttributeSet attrs) {
@@ -136,6 +164,10 @@ public class SplitPaneLayout extends ViewGroup {
         check();
 
         if (widthSize > 0 && heightSize > 0) {
+            if (rightPaneIsFullscreen) {
+                getChildAt(1).measure(MeasureSpec.makeMeasureSpec(widthSize, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(heightSize, MeasureSpec.EXACTLY));
+                return;
+            }
             switch (mOrientation) {
                 case 0: {
                     if (mSplitterPosition == Integer.MIN_VALUE && mSplitterPositionPercent < 0) {
@@ -169,6 +201,10 @@ public class SplitPaneLayout extends ViewGroup {
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int w = r - l;
         int h = b - t;
+        if (rightPaneIsFullscreen) {
+            getChildAt(1).layout(0, 0, w, h);
+            return;
+        }
         switch (mOrientation) {
             case 0: {
                 getChildAt(0).layout(0, 0, mSplitterPosition - (mSplitterSize / 2), h);
@@ -237,6 +273,9 @@ public class SplitPaneLayout extends ViewGroup {
                         mSplitterPositionPercent = -1;
                         remeasure();
                         requestLayout();
+                        if (resizeListener != null) {
+                            resizeListener.panesResized();
+                        }
                     }
                     break;
                 }
@@ -251,6 +290,7 @@ public class SplitPaneLayout extends ViewGroup {
         Parcelable superState = super.onSaveInstanceState();
         SavedState ss = new SavedState(superState);
         ss.mSplitterPositionPercent = mSplitterPositionPercent;
+        ss.mRightPageIsFullscreen = rightPaneIsFullscreen;
         return ss;
     }
 
@@ -263,6 +303,7 @@ public class SplitPaneLayout extends ViewGroup {
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
         setSplitterPositionPercent(ss.mSplitterPositionPercent);
+        setRightPaneFullscreen(ss.mRightPageIsFullscreen);
     }
 
     /**
@@ -286,6 +327,9 @@ public class SplitPaneLayout extends ViewGroup {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
+        if (rightPaneIsFullscreen) {
+            return;
+        }
         if (mSplitterDrawable != null) {
             mSplitterDrawable.setBounds(mSplitterRect);
             mSplitterDrawable.draw(canvas);
@@ -465,6 +509,7 @@ public class SplitPaneLayout extends ViewGroup {
             }
         };
         float mSplitterPositionPercent;
+        boolean mRightPageIsFullscreen;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -473,12 +518,14 @@ public class SplitPaneLayout extends ViewGroup {
         private SavedState(Parcel in) {
             super(in);
             mSplitterPositionPercent = in.readFloat();
+            mRightPageIsFullscreen = in.readByte() == 1;
         }
 
         @Override
         public void writeToParcel(Parcel out, int flags) {
             super.writeToParcel(out, flags);
             out.writeFloat(mSplitterPositionPercent);
+            out.writeByte(mRightPageIsFullscreen ? (byte) 1 : (byte) 0);
         }
     }
 

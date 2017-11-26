@@ -13,6 +13,7 @@ Add a reference to the split-pane-layout library project, or copy the necessary 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         spl:orientation="vertical"
+        spl:paneSizeMin="100dip"
         spl:splitterSize="12dip"
         spl:splitterPosition="33%"
         spl:splitterBackground="@drawable/splitter_bg_v"
@@ -28,20 +29,3 @@ Add a reference to the split-pane-layout library project, or copy the necessary 
     </com.mobidevelop.spl.widget.SplitPaneLayout>
 
 **NOTE**: A SplitPaneLayout **MUST** have exactly two children.  
-
-Using with Gradle
-====================
-SplitPaneLayout is published to Maven Central so can be easily added to your Gradle-based Android projects by adding the following entry to your dependencies:
-
-```groovy
-dependencies {
-    compile 'com.mobidevelop.spl:split-pane-layout:1.0.0'
-}
-```
-
-
-Precompiled Demo APK
-====================
-<https://www.box.com/s/6yw9kekmq558wgbwan91>
-
-![QR](https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=https://www.box.com/s/6yw9kekmq558wgbwan91)

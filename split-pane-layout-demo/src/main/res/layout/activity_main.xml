@@ -7,6 +7,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     spl:orientation="vertical"
+    spl:paneSizeMin="100dip"
     spl:splitterSize="12dip"
     spl:splitterPosition="33%"
     spl:splitterBackground="@drawable/splitter_bg_v">

@@ -5,6 +5,7 @@
             <enum name="horizontal" value="0" />
             <enum name="vertical" value="1" />
         </attr>
+        <attr name="paneSizeMin" format="dimension" />
         <attr name="splitterSize" format="dimension" />
         <attr name="splitterMovable" format="boolean" />
         <attr name="splitterPosition" format="dimension|fraction" />

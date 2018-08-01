@@ -7,16 +7,22 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     spl:orientation="horizontal"
-    spl:splitterSize="12dip"
+    spl:splitterSize="4dip"
     spl:splitterPosition="33%"
-    spl:splitterBackground="@drawable/splitter_bg_h">
+    spl:splitterBackground="@drawable/splitter_bg_h"
+    spl:splitterDraggingBackground="#88000000"
+    spl:paneSizeMin="48dip">
+
     <TextView
-        android:layout_width="fill_parent"
+        android:id="@+id/first"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
 
     <TextView
-        android:layout_width="fill_parent"
+        android:id="@+id/second"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
+
 </com.mobidevelop.spl.widget.SplitPaneLayout>

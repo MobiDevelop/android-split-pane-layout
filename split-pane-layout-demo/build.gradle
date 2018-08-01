@@ -1,25 +1,26 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    compileSdkVersion 26
 
     defaultConfig {
         applicationId "com.mobidevelop.spl.demo"
-        minSdkVersion 4
-        targetSdkVersion 19
+        minSdkVersion 16
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
+
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }
 
 dependencies {
-    compile project(":split-pane-layout")
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':split-pane-layout')
+    implementation 'com.android.support:appcompat-v7:26.1.0'
 }

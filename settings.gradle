@@ -1,1 +1,2 @@
-include ':split-pane-layout', ':split-pane-layout-demo'
+include ':split-pane-layout'
+include ':split-pane-layout-demo'

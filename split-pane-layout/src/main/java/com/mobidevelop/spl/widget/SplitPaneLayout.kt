@@ -70,20 +70,23 @@ class SplitPaneLayout : ViewGroup {
     private var isMovingSplitter = false
     private var isMeasured = false
 
-    constructor(context: Context?) : super(context) {
+    constructor(context: Context) : super(context) {
         mSplitterPositionPercent = 0.5f
         mSplitterDrawable = PaintDrawable(-0x77000001)
         mSplitterDraggingDrawable = PaintDrawable(-0x77000001)
+        init(null)
     }
 
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-        extractAttributes(context, attrs)
-        descendantFocusability = FOCUS_AFTER_DESCENDANTS
-        isFocusable = true
-        isFocusableInTouchMode = false
+        init(attrs)
     }
 
-    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
+    constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
+            super(context, attrs, defStyle) {
+        init(attrs)
+    }
+
+    private fun init(attrs: AttributeSet?) {
         extractAttributes(context, attrs)
         descendantFocusability = FOCUS_AFTER_DESCENDANTS
         isFocusable = true

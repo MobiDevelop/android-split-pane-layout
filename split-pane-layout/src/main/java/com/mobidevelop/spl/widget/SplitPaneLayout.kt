@@ -269,6 +269,17 @@ class SplitPaneLayout : ViewGroup {
         return super.onKeyDown(keyCode, event)
     }
 
+    override fun onInterceptTouchEvent(event: MotionEvent): Boolean {
+        if (isSplitterMovable) {
+            val x = event.x.toInt()
+            val y = event.y.toInt()
+            return if (event.action == MotionEvent.ACTION_DOWN)
+                (mSplitterTouchBounds.contains(x, y))
+            else false
+        }
+        return false
+    }
+
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (isSplitterMovable) {
             val x = event.x.toInt()

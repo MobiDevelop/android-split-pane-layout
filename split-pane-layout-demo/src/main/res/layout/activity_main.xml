@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<com.mobidevelop.spl.widget.SplitPaneLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.mobidevelop.spl.widget.SplitPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:spl="http://schemas.android.com/apk/res-auto"
     android:id="@+id/layout"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     spl:orientation="vertical"
-    spl:splitterSize="4dip"
-    spl:splitterPosition="50%"
+    spl:paneSizeMin="48dip"
     spl:splitterBackground="@drawable/splitter_bg_v"
     spl:splitterDraggingBackground="#88000000"
-    spl:paneSizeMin="48dip">
+    spl:splitterPosition="50%"
+    spl:splitterSize="4dip"
+    spl:splitterTouchSlop="48dp">
 
     <TextView
         android:id="@+id/first"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
         android:text="@string/hello_world" />
 
     <TextView
         android:id="@+id/second"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
         android:text="@string/hello_world" />
 
 </com.mobidevelop.spl.widget.SplitPaneLayout>

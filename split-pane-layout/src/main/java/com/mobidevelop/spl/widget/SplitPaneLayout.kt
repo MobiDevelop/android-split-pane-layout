@@ -123,7 +123,10 @@ class SplitPaneLayout : ViewGroup {
                 TypedValue.TYPE_INT_COLOR_ARGB4,
                 TypedValue.TYPE_INT_COLOR_RGB8,
                 TypedValue.TYPE_INT_COLOR_RGB4 -> PaintDrawable(
-                        a.getColor(R.styleable.SplitPaneLayout_splitterBackground, DEFAULT_SPLITTER_COLOR)
+                        a.getColor(
+                                R.styleable.SplitPaneLayout_splitterBackground,
+                                DEFAULT_SPLITTER_COLOR
+                        )
                 )
                 else -> DEFAULT_DRAWABLE
             }
@@ -139,7 +142,8 @@ class SplitPaneLayout : ViewGroup {
                         TypedValue.TYPE_INT_COLOR_RGB8,
                         TypedValue.TYPE_INT_COLOR_RGB4 -> PaintDrawable(
                                 a.getColor(
-                                        R.styleable.SplitPaneLayout_splitterDraggingBackground, DEFAULT_DRAGGING_COLOR
+                                        R.styleable.SplitPaneLayout_splitterDraggingBackground,
+                                        DEFAULT_DRAGGING_COLOR
                                 )
                         )
                         else -> DEFAULT_DRAWABLE
@@ -365,6 +369,10 @@ class SplitPaneLayout : ViewGroup {
         val superState = super.onSaveInstanceState()
         return SavedState(superState).apply {
             mSplitterPositionPercent = this@SplitPaneLayout.mSplitterPositionPercent
+            mPaneSizeMin = this@SplitPaneLayout.paneSizeMin
+            mSplitterTouchSlop = this@SplitPaneLayout.mSplitterTouchSlop
+            mOrientation = this@SplitPaneLayout.mOrientation
+            mIsSplitterMovable = this@SplitPaneLayout.isSplitterMovable
         }
     }
 
@@ -375,6 +383,10 @@ class SplitPaneLayout : ViewGroup {
         } else {
             super.onRestoreInstanceState(state.superState)
             splitterPositionPercent = state.mSplitterPositionPercent
+            paneSizeMin = state.mPaneSizeMin
+            splitterTouchSlop = state.mSplitterTouchSlop
+            orientation = state.mOrientation
+            isSplitterMovable = state.mIsSplitterMovable
         }
     }
 
@@ -517,15 +529,27 @@ class SplitPaneLayout : ViewGroup {
      */
     class SavedState : BaseSavedState {
         var mSplitterPositionPercent = DEFAULT_POSITION_PERCENT
+        var mPaneSizeMin = DEFAULT_PANE_SIZE_MIN
+        var mSplitterTouchSlop = DEFAULT_SPLITTER_TOUCH_SLOP
+        var mOrientation = DEFAULT_ORIENTATION
+        var mIsSplitterMovable = DEFAULT_IS_MOVABLE
 
         internal constructor(superState: Parcelable?) : super(superState)
         private constructor(parcel: Parcel) : super(parcel) {
             mSplitterPositionPercent = parcel.readFloat()
+            mPaneSizeMin = parcel.readInt()
+            mSplitterTouchSlop = parcel.readInt()
+            mOrientation = parcel.readInt()
+            mIsSplitterMovable = parcel.readInt() == 1
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             out.writeFloat(mSplitterPositionPercent)
+            out.writeInt(mPaneSizeMin)
+            out.writeInt(mSplitterTouchSlop)
+            out.writeInt(mOrientation)
+            out.writeInt(if (mIsSplitterMovable) 1 else 0)
         }
 
         companion object CREATOR : Parcelable.Creator<SavedState> {
@@ -547,6 +571,8 @@ class SplitPaneLayout : ViewGroup {
         const val DEFAULT_IS_MOVABLE = true
         const val DEFAULT_DRAGGING_COLOR = -0x77000001
         const val DEFAULT_SPLITTER_COLOR = -0x1000000
+        const val DEFAULT_PANE_SIZE_MIN = 0
+        const val DEFAULT_SPLITTER_TOUCH_SLOP = 0
         val DEFAULT_DRAWABLE = PaintDrawable(DEFAULT_DRAGGING_COLOR)
         private fun clamp(value: Float, min: Float, max: Float): Float {
             return when {

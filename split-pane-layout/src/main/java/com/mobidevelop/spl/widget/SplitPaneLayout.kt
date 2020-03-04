@@ -43,16 +43,6 @@ class SplitPaneLayout : ViewGroup {
         fun onSplitterPositionChanged(splitPaneLayout: SplitPaneLayout, fromUser: Boolean)
     }
 
-    /**
-     * Whether the splitter is movable by the user
-     */
-    var isSplitterMovable = DEFAULT_IS_MOVABLE
-
-    /**
-     * Listener to receive callbacks when the splitter position is changed
-     */
-    var onSplitterPositionChangedListener: OnSplitterPositionChangedListener? = null
-
     private var mOrientation = DEFAULT_ORIENTATION
     private var mSplitterSize = 8
     private var mSplitterPosition = Int.MIN_VALUE
@@ -393,9 +383,6 @@ class SplitPaneLayout : ViewGroup {
         val superState = super.onSaveInstanceState()
         return SavedState(superState).apply {
             mSplitterPositionPercent = this@SplitPaneLayout.mSplitterPositionPercent
-            mPaneSizeMin = this@SplitPaneLayout.paneSizeMin
-            mSplitterTouchSlop = this@SplitPaneLayout.mSplitterTouchSlop
-            mIsSplitterMovable = this@SplitPaneLayout.isSplitterMovable
         }
     }
 
@@ -406,9 +393,6 @@ class SplitPaneLayout : ViewGroup {
         } else {
             super.onRestoreInstanceState(state.superState)
             splitterPositionPercent = state.mSplitterPositionPercent
-            paneSizeMin = state.mPaneSizeMin
-            splitterTouchSlop = state.mSplitterTouchSlop
-            isSplitterMovable = state.mIsSplitterMovable
         }
     }
 
@@ -440,6 +424,16 @@ class SplitPaneLayout : ViewGroup {
             mSplitterDraggingDrawable.draw(canvas)
         }
     }
+
+    /**
+     * Whether the splitter is movable by the user
+     */
+    var isSplitterMovable = DEFAULT_IS_MOVABLE
+
+    /**
+     * Listener to receive callbacks when the splitter position is changed
+     */
+    var onSplitterPositionChangedListener: OnSplitterPositionChangedListener? = null
 
     /**
      * Current drawable used for the splitter.
@@ -547,24 +541,15 @@ class SplitPaneLayout : ViewGroup {
      */
     class SavedState : BaseSavedState {
         var mSplitterPositionPercent = DEFAULT_POSITION_PERCENT
-        var mPaneSizeMin = DEFAULT_PANE_SIZE_MIN
-        var mSplitterTouchSlop = DEFAULT_SPLITTER_TOUCH_SLOP
-        var mIsSplitterMovable = DEFAULT_IS_MOVABLE
 
         internal constructor(superState: Parcelable?) : super(superState)
         private constructor(parcel: Parcel) : super(parcel) {
             mSplitterPositionPercent = parcel.readFloat()
-            mPaneSizeMin = parcel.readInt()
-            mSplitterTouchSlop = parcel.readInt()
-            mIsSplitterMovable = parcel.readInt() == 1
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {
             super.writeToParcel(out, flags)
             out.writeFloat(mSplitterPositionPercent)
-            out.writeInt(mPaneSizeMin)
-            out.writeInt(mSplitterTouchSlop)
-            out.writeInt(if (mIsSplitterMovable) 1 else 0)
         }
 
         companion object CREATOR : Parcelable.Creator<SavedState> {

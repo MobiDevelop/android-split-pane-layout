@@ -416,9 +416,8 @@ class SplitPaneLayout : ViewGroup {
         get() = mSplitterDrawable
         set(value) {
             mSplitterDrawable = value
-            if (childCount == 2) {
-                remeasure()
-            }
+            check()
+            remeasure()
         }
 
     /**
@@ -441,9 +440,8 @@ class SplitPaneLayout : ViewGroup {
         set(value) {
             if (mOrientation != value) {
                 mOrientation = value
-                if (childCount == 2) {
-                    remeasure()
-                }
+                check()
+                remeasure()
             }
         }
 
@@ -454,9 +452,8 @@ class SplitPaneLayout : ViewGroup {
         get() = mSplitterSize
         set(value) {
             mSplitterSize = value
-            if (childCount == 2) {
-                remeasure()
-            }
+            check()
+            remeasure()
         }
 
     /**
@@ -502,7 +499,8 @@ class SplitPaneLayout : ViewGroup {
         set(value) {
             minSplitterPosition = value
             if (isMeasured) {
-                val newSplitterPosition = clamp(mSplitterPosition, minSplitterPosition, maxSplitterPosition)
+                val newSplitterPosition =
+                        clamp(mSplitterPosition, minSplitterPosition, maxSplitterPosition)
                 if (newSplitterPosition != mSplitterPosition) {
                     splitterPosition = newSplitterPosition
                 }
@@ -521,8 +519,8 @@ class SplitPaneLayout : ViewGroup {
         var mSplitterPositionPercent = DEFAULT_POSITION_PERCENT
 
         internal constructor(superState: Parcelable?) : super(superState)
-        private constructor(`in`: Parcel) : super(`in`) {
-            mSplitterPositionPercent = `in`.readFloat()
+        private constructor(parcel: Parcel) : super(parcel) {
+            mSplitterPositionPercent = parcel.readFloat()
         }
 
         override fun writeToParcel(out: Parcel, flags: Int) {

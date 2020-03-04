@@ -206,15 +206,33 @@ class SplitPaneLayout : ViewGroup {
         check()
         if (measuredWidth <= 0 || measuredHeight <= 0) return
 
+        mSplitterPosition = Int.MIN_VALUE
+        measure()
+    }
+
+    private fun measure() {
+        if (measuredWidth <= 0 || measuredHeight <= 0) return
         computeSplitterPosition()
         when (mOrientation) {
             ORIENTATION_HORIZONTAL -> {
-                getChildAt(0).measure(MeasureSpec.makeMeasureSpec(mSplitterPosition - mSplitterSize / 2, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY))
-                getChildAt(1).measure(MeasureSpec.makeMeasureSpec(measuredWidth - mSplitterSize / 2 - mSplitterPosition, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY))
+                getChildAt(0).measure(
+                        MeasureSpec.makeMeasureSpec(mSplitterPosition - mSplitterSize / 2, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
+                )
+                getChildAt(1).measure(
+                        MeasureSpec.makeMeasureSpec(measuredWidth - mSplitterSize / 2 - mSplitterPosition, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
+                )
             }
             ORIENTATION_VERTICAL -> {
-                getChildAt(0).measure(MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(mSplitterPosition - mSplitterSize / 2, MeasureSpec.EXACTLY))
-                getChildAt(1).measure(MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(measuredHeight - mSplitterSize / 2 - mSplitterPosition, MeasureSpec.EXACTLY))
+                getChildAt(0).measure(
+                        MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(mSplitterPosition - mSplitterSize / 2, MeasureSpec.EXACTLY)
+                )
+                getChildAt(1).measure(
+                        MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
+                        MeasureSpec.makeMeasureSpec(measuredHeight - mSplitterSize / 2 - mSplitterPosition, MeasureSpec.EXACTLY)
+                )
             }
         }
         isMeasured = true
@@ -241,21 +259,16 @@ class SplitPaneLayout : ViewGroup {
         if (event.isShiftPressed) {
             offset *= 5
         }
-        when (mOrientation) {
-            ORIENTATION_HORIZONTAL -> if (keyCode == KeyEvent.KEYCODE_DPAD_LEFT) {
+        when {
+            (mOrientation == ORIENTATION_HORIZONTAL && keyCode == KeyEvent.KEYCODE_DPAD_LEFT) ||
+                    (mOrientation == ORIENTATION_VERTICAL && keyCode == KeyEvent.KEYCODE_DPAD_UP) -> {
                 mSplitterPosition = clamp(mSplitterPosition - offset, minSplitterPosition, maxSplitterPosition)
-                mSplitterPositionPercent = -1f
-                remeasure = true
-            } else if (keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) {
-                mSplitterPosition = clamp(mSplitterPosition + offset, minSplitterPosition, maxSplitterPosition)
                 mSplitterPositionPercent = -1f
                 remeasure = true
             }
-            ORIENTATION_VERTICAL -> if (keyCode == KeyEvent.KEYCODE_DPAD_UP) {
-                mSplitterPosition = clamp(mSplitterPosition - offset, minSplitterPosition, maxSplitterPosition)
-                mSplitterPositionPercent = -1f
-                remeasure = true
-            } else if (keyCode == KeyEvent.KEYCODE_DPAD_DOWN) {
+
+            (mOrientation == ORIENTATION_HORIZONTAL && keyCode == KeyEvent.KEYCODE_DPAD_RIGHT) ||
+                    (mOrientation == ORIENTATION_VERTICAL && keyCode == KeyEvent.KEYCODE_DPAD_DOWN) -> {
                 mSplitterPosition = clamp(mSplitterPosition + offset, minSplitterPosition, maxSplitterPosition)
                 mSplitterPositionPercent = -1f
                 remeasure = true
@@ -318,22 +331,28 @@ class SplitPaneLayout : ViewGroup {
             var take = true
             when (mOrientation) {
                 ORIENTATION_HORIZONTAL -> {
+                    //regular X axis dragging
                     mSplitterDraggingBounds.offset(x - lastTouchX, 0)
+                    //clip dragging splitter to left bound
                     if (mSplitterDraggingBounds.centerX() < minSplitterPosition) {
                         take = false
                         mSplitterDraggingBounds.offset(minSplitterPosition - mSplitterDraggingBounds.centerX(), 0)
                     }
+                    //clip dragging splitter to right bound
                     if (mSplitterDraggingBounds.centerX() > maxSplitterPosition) {
                         take = false
                         mSplitterDraggingBounds.offset(maxSplitterPosition - mSplitterDraggingBounds.centerX(), 0)
                     }
                 }
                 ORIENTATION_VERTICAL -> {
+                    //regular Y axis dragging
                     mSplitterDraggingBounds.offset(0, y - lastTouchY)
+                    //clip dragging splitter to top bound
                     if (mSplitterDraggingBounds.centerY() < minSplitterPosition) {
                         take = false
                         mSplitterDraggingBounds.offset(0, minSplitterPosition - mSplitterDraggingBounds.centerY())
                     }
+                    //clip dragging splitter to bottom bound
                     if (mSplitterDraggingBounds.centerY() > maxSplitterPosition) {
                         take = false
                         mSplitterDraggingBounds.offset(0, maxSplitterPosition - mSplitterDraggingBounds.centerY())
@@ -352,16 +371,13 @@ class SplitPaneLayout : ViewGroup {
         if (isDragging) {
             isDragging = false
             isMovingSplitter = false
-            when (mOrientation) {
-                ORIENTATION_HORIZONTAL -> {
-                    mSplitterPosition = clamp(x, minSplitterPosition, maxSplitterPosition)
-                    mSplitterPositionPercent = -1f
-                }
-                ORIENTATION_VERTICAL -> {
-                    mSplitterPosition = clamp(y, minSplitterPosition, maxSplitterPosition)
-                    mSplitterPositionPercent = -1f
-                }
+            val axis = when (mOrientation) {
+                ORIENTATION_HORIZONTAL -> x
+                //ORIENTATION_VERTICAL
+                else -> y
             }
+            mSplitterPosition = clamp(axis, minSplitterPosition, maxSplitterPosition)
+            mSplitterPositionPercent = -1f
             remeasure()
             notifySplitterPositionChanged(true)
         }
@@ -405,9 +421,7 @@ class SplitPaneLayout : ViewGroup {
     private fun remeasure() {
         // TODO: Performance: Guard against calling too often, can it be done without requestLayout?
         forceLayout()
-        measure(MeasureSpec.makeMeasureSpec(measuredWidth, MeasureSpec.EXACTLY),
-                MeasureSpec.makeMeasureSpec(measuredHeight, MeasureSpec.EXACTLY)
-        )
+        measure()
         requestLayout()
     }
 

@@ -518,7 +518,7 @@ class SplitPaneLayout : ViewGroup {
      * Holds important values when we need to save instance state.
      */
     class SavedState : BaseSavedState {
-        var mSplitterPositionPercent = 0f
+        var mSplitterPositionPercent = DEFAULT_POSITION_PERCENT
 
         internal constructor(superState: Parcelable?) : super(superState)
         private constructor(`in`: Parcel) : super(`in`) {

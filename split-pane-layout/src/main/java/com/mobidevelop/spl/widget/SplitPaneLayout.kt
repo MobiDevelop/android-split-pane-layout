@@ -371,7 +371,6 @@ class SplitPaneLayout : ViewGroup {
             mSplitterPositionPercent = this@SplitPaneLayout.mSplitterPositionPercent
             mPaneSizeMin = this@SplitPaneLayout.paneSizeMin
             mSplitterTouchSlop = this@SplitPaneLayout.mSplitterTouchSlop
-            mOrientation = this@SplitPaneLayout.mOrientation
             mIsSplitterMovable = this@SplitPaneLayout.isSplitterMovable
         }
     }
@@ -385,7 +384,6 @@ class SplitPaneLayout : ViewGroup {
             splitterPositionPercent = state.mSplitterPositionPercent
             paneSizeMin = state.mPaneSizeMin
             splitterTouchSlop = state.mSplitterTouchSlop
-            orientation = state.mOrientation
             isSplitterMovable = state.mIsSplitterMovable
         }
     }
@@ -531,7 +529,6 @@ class SplitPaneLayout : ViewGroup {
         var mSplitterPositionPercent = DEFAULT_POSITION_PERCENT
         var mPaneSizeMin = DEFAULT_PANE_SIZE_MIN
         var mSplitterTouchSlop = DEFAULT_SPLITTER_TOUCH_SLOP
-        var mOrientation = DEFAULT_ORIENTATION
         var mIsSplitterMovable = DEFAULT_IS_MOVABLE
 
         internal constructor(superState: Parcelable?) : super(superState)
@@ -539,7 +536,6 @@ class SplitPaneLayout : ViewGroup {
             mSplitterPositionPercent = parcel.readFloat()
             mPaneSizeMin = parcel.readInt()
             mSplitterTouchSlop = parcel.readInt()
-            mOrientation = parcel.readInt()
             mIsSplitterMovable = parcel.readInt() == 1
         }
 
@@ -548,7 +544,6 @@ class SplitPaneLayout : ViewGroup {
             out.writeFloat(mSplitterPositionPercent)
             out.writeInt(mPaneSizeMin)
             out.writeInt(mSplitterTouchSlop)
-            out.writeInt(mOrientation)
             out.writeInt(if (mIsSplitterMovable) 1 else 0)
         }
 

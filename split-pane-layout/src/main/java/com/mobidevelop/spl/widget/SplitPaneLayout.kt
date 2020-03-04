@@ -46,21 +46,21 @@ class SplitPaneLayout : ViewGroup {
     /**
      * Whether the splitter is movable by the user
      */
-    var isSplitterMovable = true
+    var isSplitterMovable = DEFAULT_IS_MOVABLE
 
     /**
      * Listener to receive callbacks when the splitter position is changed
      */
     var onSplitterPositionChangedListener: OnSplitterPositionChangedListener? = null
 
-    private var mOrientation = 0
+    private var mOrientation = DEFAULT_ORIENTATION
     private var mSplitterSize = 8
     private var mSplitterPosition = Int.MIN_VALUE
-    private var mSplitterPositionPercent = 0.5f
+    private var mSplitterPositionPercent = DEFAULT_POSITION_PERCENT
     private var mSplitterTouchSlop = 0
     private var minSplitterPosition = 0
-    private var mSplitterDrawable: Drawable? = null
-    private var mSplitterDraggingDrawable: Drawable? = null
+    private var mSplitterDrawable: Drawable = DEFAULT_DRAWABLE
+    private var mSplitterDraggingDrawable: Drawable = DEFAULT_DRAWABLE
     private val mSplitterBounds = Rect()
     private val mSplitterTouchBounds = Rect()
     private val mSplitterDraggingBounds = Rect()
@@ -71,9 +71,6 @@ class SplitPaneLayout : ViewGroup {
     private var isMeasured = false
 
     constructor(context: Context) : super(context) {
-        mSplitterPositionPercent = 0.5f
-        mSplitterDrawable = PaintDrawable(-0x77000001)
-        mSplitterDraggingDrawable = PaintDrawable(-0x77000001)
         init(null)
     }
 
@@ -97,42 +94,63 @@ class SplitPaneLayout : ViewGroup {
         if (attrs == null) return
 
         val a = context.obtainStyledAttributes(attrs, R.styleable.SplitPaneLayout)
-        mOrientation = a.getInt(R.styleable.SplitPaneLayout_orientation, 0)
-        mSplitterSize = a.getDimensionPixelSize(R.styleable.SplitPaneLayout_splitterSize, context.resources.getDimensionPixelSize(R.dimen.spl_default_splitter_size))
+        mOrientation = a.getInt(R.styleable.SplitPaneLayout_orientation, ORIENTATION_HORIZONTAL)
+        mSplitterSize = a.getDimensionPixelSize(
+                R.styleable.SplitPaneLayout_splitterSize,
+                context.resources.getDimensionPixelSize(R.dimen.spl_default_splitter_size)
+        )
         isSplitterMovable = a.getBoolean(R.styleable.SplitPaneLayout_splitterMovable, true)
-        var value = a.peekValue(R.styleable.SplitPaneLayout_splitterPosition)
-        if (value != null) {
-            if (value.type == TypedValue.TYPE_DIMENSION) {
-                mSplitterPosition = a.getDimensionPixelSize(R.styleable.SplitPaneLayout_splitterPosition, Int.MIN_VALUE)
-            } else if (value.type == TypedValue.TYPE_FRACTION) {
-                mSplitterPositionPercent = a.getFraction(R.styleable.SplitPaneLayout_splitterPosition, 100, 100, 50f) * 0.01f
-            }
-        } else {
-            mSplitterPosition = Int.MIN_VALUE
-            mSplitterPositionPercent = 0.5f
-        }
-        value = a.peekValue(R.styleable.SplitPaneLayout_splitterBackground)
-        if (value != null) {
-            if (value.type == TypedValue.TYPE_REFERENCE ||
-                    value.type == TypedValue.TYPE_STRING) {
-                mSplitterDrawable = a.getDrawable(R.styleable.SplitPaneLayout_splitterBackground)
-            } else if (value.type == TypedValue.TYPE_INT_COLOR_ARGB8 || value.type == TypedValue.TYPE_INT_COLOR_ARGB4 || value.type == TypedValue.TYPE_INT_COLOR_RGB8 || value.type == TypedValue.TYPE_INT_COLOR_RGB4) {
-                mSplitterDrawable = PaintDrawable(a.getColor(R.styleable.SplitPaneLayout_splitterBackground, -0x1000000))
+        a.peekValue(R.styleable.SplitPaneLayout_splitterPosition)?.let {
+            when (it.type) {
+                TypedValue.TYPE_DIMENSION -> {
+                    mSplitterPosition = a.getDimensionPixelSize(
+                            R.styleable.SplitPaneLayout_splitterPosition, Int.MIN_VALUE
+                    )
+                }
+                TypedValue.TYPE_FRACTION -> {
+                    mSplitterPositionPercent = a.getFraction(
+                            R.styleable.SplitPaneLayout_splitterPosition, 100, 100, 50f
+                    ) * 0.01f
+                }
             }
         }
-        value = a.peekValue(R.styleable.SplitPaneLayout_splitterDraggingBackground)
-        if (value != null) {
-            if (value.type == TypedValue.TYPE_REFERENCE ||
-                    value.type == TypedValue.TYPE_STRING) {
-                mSplitterDraggingDrawable = a.getDrawable(R.styleable.SplitPaneLayout_splitterDraggingBackground)
-            } else if (value.type == TypedValue.TYPE_INT_COLOR_ARGB8 || value.type == TypedValue.TYPE_INT_COLOR_ARGB4 || value.type == TypedValue.TYPE_INT_COLOR_RGB8 || value.type == TypedValue.TYPE_INT_COLOR_RGB4) {
-                mSplitterDraggingDrawable = PaintDrawable(a.getColor(R.styleable.SplitPaneLayout_splitterDraggingBackground, -0x77000001))
+        mSplitterDrawable = a.peekValue(R.styleable.SplitPaneLayout_splitterBackground)?.let {
+            when (it.type) {
+                TypedValue.TYPE_REFERENCE,
+                TypedValue.TYPE_STRING ->
+                    a.getDrawable(R.styleable.SplitPaneLayout_splitterBackground)
+                TypedValue.TYPE_INT_COLOR_ARGB8,
+                TypedValue.TYPE_INT_COLOR_ARGB4,
+                TypedValue.TYPE_INT_COLOR_RGB8,
+                TypedValue.TYPE_INT_COLOR_RGB4 -> PaintDrawable(
+                        a.getColor(R.styleable.SplitPaneLayout_splitterBackground, DEFAULT_SPLITTER_COLOR)
+                )
+                else -> DEFAULT_DRAWABLE
             }
-        } else {
-            mSplitterDraggingDrawable = PaintDrawable(-0x77000001)
-        }
-        mSplitterTouchSlop = a.getDimensionPixelSize(R.styleable.SplitPaneLayout_splitterTouchSlop, ViewConfiguration.get(context).scaledTouchSlop)
-        minSplitterPosition = a.getDimensionPixelSize(R.styleable.SplitPaneLayout_paneSizeMin, 0)
+        } ?: DEFAULT_DRAWABLE
+        mSplitterDraggingDrawable =
+                a.peekValue(R.styleable.SplitPaneLayout_splitterDraggingBackground)?.let {
+                    when (it.type) {
+                        TypedValue.TYPE_REFERENCE,
+                        TypedValue.TYPE_STRING ->
+                            a.getDrawable(R.styleable.SplitPaneLayout_splitterDraggingBackground)
+                        TypedValue.TYPE_INT_COLOR_ARGB8,
+                        TypedValue.TYPE_INT_COLOR_ARGB4,
+                        TypedValue.TYPE_INT_COLOR_RGB8,
+                        TypedValue.TYPE_INT_COLOR_RGB4 -> PaintDrawable(
+                                a.getColor(
+                                        R.styleable.SplitPaneLayout_splitterDraggingBackground, DEFAULT_DRAGGING_COLOR
+                                )
+                        )
+                        else -> DEFAULT_DRAWABLE
+                    }
+                } ?: DEFAULT_DRAWABLE
+        mSplitterTouchSlop = a.getDimensionPixelSize(
+                R.styleable.SplitPaneLayout_splitterTouchSlop,
+                ViewConfiguration.get(context).scaledTouchSlop
+        )
+        minSplitterPosition =
+                a.getDimensionPixelSize(R.styleable.SplitPaneLayout_paneSizeMin, 0)
         a.recycle()
     }
 
@@ -381,22 +399,20 @@ class SplitPaneLayout : ViewGroup {
 
     override fun dispatchDraw(canvas: Canvas) {
         super.dispatchDraw(canvas)
-        if (mSplitterDrawable != null) {
-            mSplitterDrawable!!.state = drawableState
-            mSplitterDrawable!!.bounds = mSplitterBounds
-            mSplitterDrawable!!.draw(canvas)
-        }
+        mSplitterDrawable.state = drawableState
+        mSplitterDrawable.bounds = mSplitterBounds
+        mSplitterDrawable.draw(canvas)
         if (isDragging) {
-            mSplitterDraggingDrawable!!.state = drawableState
-            mSplitterDraggingDrawable!!.bounds = mSplitterDraggingBounds
-            mSplitterDraggingDrawable!!.draw(canvas)
+            mSplitterDraggingDrawable.state = drawableState
+            mSplitterDraggingDrawable.bounds = mSplitterDraggingBounds
+            mSplitterDraggingDrawable.draw(canvas)
         }
     }
 
     /**
      * Current drawable used for the splitter.
      */
-    var splitterDrawable: Drawable?
+    var splitterDrawable: Drawable
         get() = mSplitterDrawable
         set(value) {
             mSplitterDrawable = value
@@ -408,7 +424,7 @@ class SplitPaneLayout : ViewGroup {
     /**
      * The current drawable to use while dragging the splitter.
      */
-    var splitterDraggingDrawable: Drawable?
+    var splitterDraggingDrawable: Drawable
         get() = mSplitterDraggingDrawable
         set(value) {
             mSplitterDraggingDrawable = value
@@ -528,6 +544,12 @@ class SplitPaneLayout : ViewGroup {
     companion object {
         const val ORIENTATION_HORIZONTAL = 0
         const val ORIENTATION_VERTICAL = 1
+        const val DEFAULT_ORIENTATION = ORIENTATION_HORIZONTAL
+        const val DEFAULT_POSITION_PERCENT = 0.5f
+        const val DEFAULT_IS_MOVABLE = true
+        const val DEFAULT_DRAGGING_COLOR = -0x77000001
+        const val DEFAULT_SPLITTER_COLOR = -0x1000000
+        val DEFAULT_DRAWABLE = PaintDrawable(DEFAULT_DRAGGING_COLOR)
         private fun clamp(value: Float, min: Float, max: Float): Float {
             return when {
                 value < min -> min
